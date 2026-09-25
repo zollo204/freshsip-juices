@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        FreshSip Juices
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ============================= -->
+    <!-- NAVBAR -->
+    <!-- ============================= -->
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+
+            <!-- LOGO -->
+
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/freshsip-logo.jpg') }}" alt="FreshSip Juices">
+            </a>
+
+
+            <!-- MOBILE MENU BUTTON -->
+
+            <button
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+
+            <!-- NAVIGATION -->
+
+            <nav
+                class="main-nav"
+                id="mainNav"
+            >
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="{% if request.endpoint == 'home' %}active{% endif %}"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="{{ url_for('shop.shop') }}"
+                    class="{% if request.endpoint in ['shop.shop', 'shop.product_details'] %}active{% endif %}"
+                >
+                    Shop
+                </a>
+
+
+                <a href="{{ url_for('main.about') }}" class="{% if request.endpoint == 'main.about' %}active{% endif %}">
+                    About
+                </a>
+
+
+                <a href="{{ url_for('main.contact') }}">
+                    Contact
+                </a>
+
+
+                <!-- CART -->
+
+                <a
+                    href="{{ url_for('cart.cart') }}"
+                    class="cart-link {% if request.endpoint == 'cart.cart' %}active{% endif %}"
+                >
+                    🛒 Cart
+
+                    {% set cart_items = session.get("cart", []) %}
+
+                    {% set cart_count = namespace(total=0) %}
+
+                    {% for item in cart_items %}
+
+                        {% set cart_count.total =
+                            cart_count.total + item["quantity"]
+                        %}
+
+                    {% endfor %}
+
+
+                    {% if cart_count.total > 0 %}
+
+                        <span class="cart-count">
+                            {{ cart_count.total }}
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <!-- ============================= -->
+                <!-- LOGGED-IN USER NAVIGATION -->
+                <!-- ============================= -->
+
+                {% if current_user.is_authenticated %}
+
+
+                    <a
+                        href="{{ url_for('dashboard.dashboard') }}"
+                        class="{% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}"
+                    >
+                        Dashboard
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('orders.orders') }}"
+                        class="{% if request.endpoint == 'orders.orders' %}active{% endif %}"
+                    >
+                        Orders
+                    </a>
+
+
+                    {% if current_user.role == "admin" %}
+
+                        <a
+                            href="{{ url_for('admin.dashboard') }}"
+                            class="admin-nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
+                        >
+                            Admin
+                        </a>
+
+                    {% endif %}
+
+
+                    <a
+                        href="{{ url_for('auth.logout') }}"
+                        class="nav-logout"
+                    >
+                        Logout
+                    </a>
+
+
+                {% else %}
+
+
+                    <!-- ============================= -->
+                    <!-- GUEST NAVIGATION -->
+                    <!-- ============================= -->
+
+                    <a
+                        href="{{ url_for('auth.login') }}"
+                        class="{% if request.endpoint == 'auth.login' %}active{% endif %}"
+                    >
+                        Login
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('auth.register') }}"
+                        class="nav-register {% if request.endpoint == 'auth.register' %}active{% endif %}"
+                    >
+                        Register
+                    </a>
+
+
+                {% endif %}
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- ============================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================= -->
+
+    <main>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for message in messages %}
+
+                    <div class="flash-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+    <!-- ============================= -->
+    <!-- FOOTER -->
+    <!-- ============================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <h2>
+                FreshSip Juices
+            </h2>
+
+            <p>
+                Fresh, natural and healthy juices delivered to your doorstep.
+            </p>
+
+            <p class="copyright">
+                © 2026 FreshSip Juices. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ============================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================= -->
+
+    <script
+        src="{{ url_for('static', filename='js/main.js') }}"
+    ></script>
+
+
+    {% block scripts %}
+    {% endblock %}
+
+
+</body>
+
+</html>

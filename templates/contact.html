@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contact Us | FreshSip Juices
+{% endblock %}
+
+{% block content %}
+
+<section class="contact-page">
+
+```
+<div class="container">
+
+
+    <!-- ============================= -->
+    <!-- CONTACT HERO -->
+    <!-- ============================= -->
+
+    <div class="contact-hero">
+
+        <p class="section-label">
+            GET IN TOUCH
+        </p>
+
+        <h1>
+            Contact FreshSip
+        </h1>
+
+        <p>
+            Have a question, need help with an order,
+            or simply want to talk to us?
+            We would love to hear from you.
+        </p>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- CONTACT GRID -->
+    <!-- ============================= -->
+
+    <div class="contact-grid">
+
+
+        <!-- ============================= -->
+        <!-- CONTACT INFORMATION -->
+        <!-- ============================= -->
+
+        <div class="contact-info">
+
+            <p class="section-label">
+                CONTACT INFORMATION
+            </p>
+
+            <h2>
+                We're Here To Help
+            </h2>
+
+            <p>
+                Reach out to FreshSip Juices through
+                any of the channels below.
+            </p>
+
+
+            <!-- PHONE -->
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    📞
+                </div>
+
+                <div>
+
+                    <h3>
+                        Phone
+                    </h3>
+
+                    <p>
+                        +254 700 000 000
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    📧
+                </div>
+
+                <div>
+
+                    <h3>
+                        Email
+                    </h3>
+
+                    <p>
+                        info@freshsip.com
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    📍
+                </div>
+
+                <div>
+
+                    <h3>
+                        Location
+                    </h3>
+
+                    <p>
+                        Nairobi, Kenya
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- OPENING HOURS -->
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    🕒
+                </div>
+
+                <div>
+
+                    <h3>
+                        Opening Hours
+                    </h3>
+
+                    <p>
+                        Monday - Saturday
+                    </p>
+
+                    <p>
+                        8:00 AM - 7:00 PM
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- CONTACT FORM -->
+        <!-- ============================= -->
+
+        <div class="contact-form-container">
+
+            <p class="section-label">
+                SEND US A MESSAGE
+            </p>
+
+            <h2>
+                How Can We Help?
+            </h2>
+
+
+            <form
+                class="contact-form"
+                method="POST"
+                action="{{ url_for('main.contact') }}"
+            >
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                    >
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="6"
+                        placeholder="Write your message here..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Send Message
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SHOP CTA -->
+    <!-- ============================= -->
+
+    <div class="contact-cta">
+
+        <h2>
+            Ready for a FreshSip?
+        </h2>
+
+        <p>
+            Browse our juices and place your order today.
+        </p>
+
+        <a
+            href="{{ url_for('shop.shop') }}"
+            class="btn btn-primary"
+        >
+            Shop Juices
+        </a>
+
+    </div>
+
+
+</div>
+```
+
+</section>
+
+{% endblock %}

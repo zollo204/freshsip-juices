@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="container">
+
+        <div class="auth-container">
+
+            <div class="auth-header">
+
+                <p>
+                    FRESHSIP ACCOUNT
+                </p>
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+                <span>
+                    Login to continue shopping with FreshSip.
+                </span>
+
+            </div>
+
+
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                    <div class="flash-messages">
+
+                        {% for message in messages %}
+
+                            <div class="flash-message">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.login') }}"
+                class="auth-form"
+            >
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-btn"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Don't have an account?
+
+                    <a href="{{ url_for('auth.register') }}">
+                        Create Account
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}
+Shop | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="shop-page">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>FRESHSIP SHOP</p>
+
+            <h1>Our Fresh Juices</h1>
+
+            <span>
+                Choose your favorite juice and enjoy freshness in every sip.
+            </span>
+
+        </div>
+
+
+        <!-- CATEGORY FILTER -->
+
+        <div class="category-filter">
+
+            <a href="{{ url_for('shop.shop') }}"
+               class="{% if not selected_category %}active{% endif %}">
+                All
+            </a>
+
+            {% for category in categories %}
+
+            <a href="{{ url_for('shop.shop', category=category) }}"
+               class="{% if selected_category == category %}active{% endif %}">
+                {{ category.replace(" Juice", "") }}
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <form method="GET"
+              action="{{ url_for('shop.shop') }}"
+              class="search-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search for a juice..."
+                value="{{ search or '' }}"
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- PRODUCTS -->
+
+        {% if products %}
+
+        <div class="product-grid">
+
+            {% for product in products %}
+
+            <div class="product-card">
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/' + product.image) }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        🍹
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRODUCT NAME -->
+
+                <h3>
+                    <a href="{{ url_for(
+                            'shop.product_details',
+                            product_id=product.id
+                        ) }}" class="product-title-link">
+                        {{ product.name }}
+                    </a>
+                </h3>
+
+
+                <!-- DESCRIPTION -->
+
+                <p>
+                    {{ product.description }}
+                </p>
+
+
+                <!-- SIZE AND ADD TO CART -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('cart.add_to_cart', product_id=product.id) }}"
+                    class="add-to-cart-form"
+                >
+
+                    <div class="size-selector">
+
+                        <label for="size-{{ product.id }}">
+                            Choose Size
+                        </label>
+
+                        <select
+                            id="size-{{ product.id }}"
+                            name="size"
+                        >
+
+                            <option value="300ml">
+                                300ml - KES {{ "%.2f"|format(product.price_300ml) }}
+                            </option>
+
+                            <option value="500ml">
+                                500ml - KES {{ "%.2f"|format(product.price_500ml) }}
+                            </option>
+
+                            <option value="1 Liter">
+                                1 Liter - KES {{ "%.2f"|format(product.price_1liter) }}
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="quantity-selector">
+
+                        <label for="quantity-{{ product.id }}">
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity-{{ product.id }}"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="{{ product.stock }}"
+                        >
+
+                    </div>
+
+
+                    <!-- ADD TO CART BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="add-to-cart-btn"
+                    >
+                        Add to Cart
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <!-- NO PRODUCTS -->
+
+        <div class="empty-shop">
+
+            <h2>
+                No products found.
+            </h2>
+
+            <p>
+                Try searching for another juice or choose a different category.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

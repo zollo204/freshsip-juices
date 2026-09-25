@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }} | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="product-details-page">
+
+    <div class="container">
+
+        <div class="product-details">
+
+            <!-- PRODUCT IMAGE -->
+
+            <div class="product-details-image">
+
+                {% if product.image %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/' + product.image
+                        ) }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="product-placeholder">
+                        🍹
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PRODUCT INFORMATION -->
+
+            <div class="product-details-info">
+
+                <p class="product-category">
+                    {{ product.category }}
+                </p>
+
+
+                <h1>
+                    {{ product.name }}
+                </h1>
+
+
+                <p class="product-description">
+                    {{ product.description }}
+                </p>
+
+
+                <!-- PRICES -->
+
+                <div class="product-prices">
+
+                    <div class="price-option">
+
+                        <span>
+                            300ml
+                        </span>
+
+                        <strong>
+                            KES {{ "%.2f"|format(product.price_300ml) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="price-option">
+
+                        <span>
+                            500ml
+                        </span>
+
+                        <strong>
+                            KES {{ "%.2f"|format(product.price_500ml) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="price-option">
+
+                        <span>
+                            1 Liter
+                        </span>
+
+                        <strong>
+                            KES {{ "%.2f"|format(product.price_1liter) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STOCK -->
+
+                {% if product.stock > 0 %}
+
+                    <p class="stock-available">
+                        ✓ {{ product.stock }} bottles available
+                    </p>
+
+                {% else %}
+
+                    <p class="stock-unavailable">
+                        Out of Stock
+                    </p>
+
+                {% endif %}
+
+
+                <!-- ADD TO CART -->
+
+                {% if product.stock > 0 %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'cart.add_to_cart',
+                        product_id=product.id
+                    ) }}"
+                    class="product-details-cart-form"
+                >
+
+                    <!-- SIZE -->
+
+                    <div class="size-selector">
+
+                        <label for="product-size">
+                            Choose Size
+                        </label>
+
+                        <select
+                            id="product-size"
+                            name="size"
+                        >
+
+                            <option value="300ml">
+                                300ml - KES {{ "%.2f"|format(product.price_300ml) }}
+                            </option>
+
+                            <option value="500ml">
+                                500ml - KES {{ "%.2f"|format(product.price_500ml) }}
+                            </option>
+
+                            <option value="1 Liter">
+                                1 Liter - KES {{ "%.2f"|format(product.price_1liter) }}
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="quantity-selector">
+
+                        <label for="product-quantity">
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="product-quantity"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="{{ product.stock }}"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="add-to-cart-btn"
+                    >
+                        Add to Cart
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+
+                <!-- BACK TO SHOP -->
+
+                <a
+                    href="{{ url_for('shop.shop') }}"
+                    class="back-to-shop"
+                >
+                    ← Continue Shopping
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

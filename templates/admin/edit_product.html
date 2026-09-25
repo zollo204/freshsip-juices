@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Product | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="admin-page">
+
+    <div class="container">
+
+        <div class="admin-header">
+
+            <div>
+
+                <p class="dashboard-label">
+                    FRESHSIP ADMIN
+                </p>
+
+                <h1>
+                    Edit Product
+                </h1>
+
+                <p>
+                    Update the details of {{ product.name }}.
+                </p>
+
+            </div>
+
+
+            <div class="admin-header-actions">
+
+                <a
+                    href="{{ url_for('admin.products') }}"
+                    class="btn btn-secondary"
+                >
+                    ← Products
+                </a>
+
+
+                <a
+                    href="{{ url_for('auth.logout') }}"
+                    class="btn btn-secondary"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                <div class="flash-messages">
+
+                    {% for message in messages %}
+
+                        <div class="flash-message">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <div class="admin-form-card">
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'admin.edit_product',
+                    product_id=product.id
+                ) }}"
+                enctype="multipart/form-data"
+            >
+
+                <div class="admin-form-section">
+
+                    <h2>
+                        Product Information
+                    </h2>
+
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ product.name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="5"
+                            required
+                        >{{ product.description }}</textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                            required
+                        >
+
+                            {% for category in categories %}
+
+                            <option
+                                value="{{ category }}"
+                                {% if product.category == category %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ category }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-section">
+
+                    <h2>
+                        Pricing
+                    </h2>
+
+
+                    <div class="admin-form-grid">
+
+                        <div class="form-group">
+
+                            <label for="price_300ml">
+                                300ml Price (KES)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="price_300ml"
+                                name="price_300ml"
+                                value="{{ product.price_300ml }}"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="price_500ml">
+                                500ml Price (KES)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="price_500ml"
+                                name="price_500ml"
+                                value="{{ product.price_500ml }}"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="price_1liter">
+                                1 Liter Price (KES)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="price_1liter"
+                                name="price_1liter"
+                                value="{{ product.price_1liter }}"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-section">
+
+                    <h2>
+                        Inventory
+                    </h2>
+
+
+                    <div class="form-group">
+
+                        <label for="stock">
+                            Stock Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            name="stock"
+                            value="{{ product.stock }}"
+                            min="0"
+                            step="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-section">
+
+                    <h2>
+                        Product Image
+                    </h2>
+
+
+                    {% if product.image %}
+
+                    <div class="current-product-image">
+
+                        <p>
+                            Current Image
+                        </p>
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='images/' + product.image
+                            ) }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="form-group">
+
+                        <label for="image">
+                            Choose New Product Image
+                        </label>
+
+                        <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept=".jpg,.jpeg,.png,.webp"
+                        >
+
+                        <small>
+                            Leave this empty to keep the current image.
+                            Allowed formats: JPG, JPEG, PNG and WEBP.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-actions">
+
+                    <a
+                        href="{{ url_for('admin.products') }}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

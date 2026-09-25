@@ -1,0 +1,520 @@
+{% extends "base.html" %}
+
+{% block title %}
+Customers | FreshSip Admin
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-page">
+
+```
+<div class="container">
+
+    <div class="section-heading">
+
+        <p>FRESHSIP ADMIN</p>
+
+        <h1>Customers</h1>
+
+        <span>
+            View and manage registered FreshSip customers.
+        </span>
+
+    </div>
+
+
+    <!-- CUSTOMER SEARCH -->
+
+    <form
+        method="GET"
+        action="{{ url_for('admin.customers') }}"
+        class="customer-search-form"
+    >
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by name, email or phone..."
+            value="{{ search or '' }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    {% if customers %}
+
+    <!-- CUSTOMER LIST -->
+
+    <div class="customer-list">
+
+        {% for customer in customers %}
+
+        <details class="customer-expand-card">
+
+            <!-- CUSTOMER SUMMARY -->
+
+            <summary class="customer-expand-summary">
+
+                <div class="customer-main-info">
+
+                    <div class="customer-id">
+                        #{{ customer.id }}
+                    </div>
+
+                    <div class="customer-name-info">
+
+                        <strong>
+                            {{ customer.name }}
+                        </strong>
+
+                        <span>
+                            {{ customer.email }}
+                        </span>
+
+                        <span>
+                            {{ customer.phone }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="customer-summary-info">
+
+                    <div class="customer-summary-item">
+
+                        <span>Role</span>
+
+                        <strong>
+                            {{ customer.role }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="customer-summary-item">
+
+                        <span>Status</span>
+
+                        {% if customer.is_active %}
+
+                        <strong class="customer-status active">
+                            Active
+                        </strong>
+
+                        {% else %}
+
+                        <strong class="customer-status disabled">
+                            Disabled
+                        </strong>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="customer-summary-item">
+
+                        <span>Orders</span>
+
+                        <strong>
+                            {{ customer.orders|length }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="customer-expand-icon">
+                    +
+                </div>
+
+            </summary>
+
+
+            <!-- EXPANDED CUSTOMER DETAILS -->
+
+            <div class="customer-expanded-content">
+
+
+                <!-- CUSTOMER INFORMATION -->
+
+                <div class="customer-details-section">
+
+                    <h3>
+                        Customer Information
+                    </h3>
+
+
+                    <div class="customer-details-grid">
+
+                        <div>
+
+                            <span>
+                                Full Name
+                            </span>
+
+                            <strong>
+                                {{ customer.name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong>
+                                {{ customer.email }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Phone
+                            </span>
+
+                            <strong>
+                                {{ customer.phone }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Account Status
+                            </span>
+
+                            {% if customer.is_active %}
+
+                            <strong class="customer-status active">
+                                Active
+                            </strong>
+
+                            {% else %}
+
+                            <strong class="customer-status disabled">
+                                Disabled
+                            </strong>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMER ACTIONS -->
+
+                {% if customer.role != "admin" %}
+
+                <div class="customer-expanded-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'admin.edit_customer',
+                            user_id=customer.id
+                        ) }}"
+                        class="customer-action edit"
+                    >
+                        Edit Customer
+                    </a>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'admin.toggle_customer_status',
+                            user_id=customer.id
+                        ) }}"
+                    >
+
+                        {% if customer.is_active %}
+
+                        <button
+                            type="submit"
+                            class="customer-action disable"
+                        >
+                            Disable Account
+                        </button>
+
+                        {% else %}
+
+                        <button
+                            type="submit"
+                            class="customer-action activate"
+                        >
+                            Activate Account
+                        </button>
+
+                        {% endif %}
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- CUSTOMER ORDERS -->
+
+                <div class="customer-orders-section">
+
+                    <div class="customer-orders-heading">
+
+                        <h3>
+                            Orders
+                        </h3>
+
+                        <span>
+                            {{ customer.orders|length }}
+                            order{% if customer.orders|length != 1 %}s{% endif %}
+                        </span>
+
+                    </div>
+
+
+                    {% if customer.orders %}
+
+                    <div class="customer-orders-list">
+
+                        {% for order in customer.orders|sort(attribute='created_at', reverse=true) %}
+
+                        <div class="customer-order-item">
+
+
+                            <!-- ORDER HEADER -->
+
+                            <div class="customer-order-header">
+
+                                <div>
+
+                                    <span>
+                                        Order
+                                    </span>
+
+                                    <strong>
+                                        #{{ order.id }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Date
+                                    </span>
+
+                                    <strong>
+                                        {{ order.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong>
+                                        KES {{ "%.2f"|format(order.total_amount) }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ORDER DETAILS -->
+
+                            <div class="customer-order-details">
+
+                                <div>
+
+                                    <span>
+                                        Payment
+                                    </span>
+
+                                    <strong>
+                                        {{ order.payment_status }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Delivery
+                                    </span>
+
+                                    <strong>
+                                        {{ order.delivery_method }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Address
+                                    </span>
+
+                                    <strong>
+                                        {{ order.delivery_address }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Order Status
+                                    </span>
+
+                                    <strong
+                                        class="order-status-badge
+                                        {% if order.order_status == 'Delivered' %}
+                                            delivered
+                                        {% elif order.order_status == 'Processing' %}
+                                            processing
+                                        {% elif order.order_status == 'Out for Delivery' %}
+                                            delivery
+                                        {% else %}
+                                            pending
+                                        {% endif %}"
+                                    >
+                                        {{ order.order_status }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ORDER ITEMS -->
+
+                            {% if order.items %}
+
+                            <div class="customer-order-products">
+
+                                <h4>
+                                    Items
+                                </h4>
+
+                                {% for item in order.items %}
+
+                                <div class="customer-order-product">
+
+                                    <div>
+
+                                        <strong>
+                                            {{ item.product_name }}
+                                        </strong>
+
+                                        <span>
+                                            {{ item.size }}
+                                            ×
+                                            {{ item.quantity }}
+                                        </span>
+
+                                    </div>
+
+                                    <strong>
+                                        KES {{ "%.2f"|format(item.subtotal) }}
+                                    </strong>
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="customer-no-orders">
+
+                        <p>
+                            This customer has not placed any orders yet.
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </details>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-shop">
+
+        <h2>
+            No customers found.
+        </h2>
+
+        <p>
+            Registered customers will appear here.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- BACK TO ADMIN DASHBOARD -->
+
+    <div class="admin-back-link">
+
+        <a
+            href="{{ url_for('admin.dashboard') }}"
+            class="btn btn-secondary"
+        >
+            Back to Admin Dashboard
+        </a>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block title %}
+FreshSip Juices | Fresh, Natural & Healthy
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <div class="hero-text">
+
+            <p class="hero-label">
+                FRESHNESS IN EVERY SIP
+            </p>
+
+            <h1>
+                Fresh, Natural & Healthy
+                <span>Juices</span>
+            </h1>
+
+            <p>
+                Enjoy delicious, freshly prepared fruit juices made
+                from natural ingredients and delivered straight to
+                your doorstep.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{{ url_for('shop.shop') }}"
+                    class="btn btn-primary"
+                >
+                    Shop Now
+                </a>
+
+                <a
+                    href="{{ url_for('shop.shop') }}"
+                    class="btn btn-secondary"
+                >
+                    Order Today
+                </a>
+
+            </div>
+
+        </div>
+
+
+    <div class="hero-image">
+        <div class="juice-circle"> 🍊 </div>
+    </div>
+
+    </div>
+
+</section>
+
+
+<section class="featured">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>OUR FAVORITES</p>
+
+            <h2>Fresh From Our Kitchen</h2>
+
+            <span>
+                Discover some of our most loved juices.
+            </span>
+
+        </div>
+
+
+        {% if featured_products %}
+
+        <div class="product-grid">
+
+            {% for product in featured_products %}
+
+            <div class="product-card">
+
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='images/' + product.image
+                            ) }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        🍹
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRODUCT NAME -->
+
+                <h3>
+
+                    <a
+                        href="{{ url_for(
+                            'shop.product_details',
+                            product_id=product.id
+                        ) }}"
+                        class="product-title-link"
+                    >
+                        {{ product.name }}
+                    </a>
+
+                </h3>
+
+
+                <!-- DESCRIPTION -->
+
+                <p>
+                    {{ product.description }}
+                </p>
+
+
+                <!-- PRICE -->
+
+                <strong>
+                    From KES {{ "%.2f"|format(product.price_300ml) }}
+                </strong>
+
+
+                <!-- VIEW PRODUCT -->
+
+                <a
+                    href="{{ url_for(
+                        'shop.product_details',
+                        product_id=product.id
+                    ) }}"
+                    class="btn btn-primary"
+                >
+                    View Product
+                </a>
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-shop">
+
+            <h2>
+                Our juices are coming soon.
+            </h2>
+
+            <p>
+                Check back shortly for our fresh juice selection.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+<section class="why-us">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>WHY FRESHSIP?</p>
+
+            <h2>Goodness You Can Taste</h2>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div>🍃</div>
+
+                <h3>
+                    100% Natural
+                </h3>
+
+                <p>
+                    Made with fresh ingredients and natural flavors.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div>🚚</div>
+
+                <h3>
+                    Fast Delivery
+                </h3>
+
+                <p>
+                    Get your favorite juices delivered conveniently.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div>❤️</div>
+
+                <h3>
+                    Made With Care
+                </h3>
+
+                <p>
+                    Quality and freshness in every bottle.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="cta">
+
+    <div class="container">
+
+        <h2>
+            Ready for a Fresh Sip?
+        </h2>
+
+        <p>
+            Order your favorite juice today.
+        </p>
+
+        <a
+            href="{{ url_for('shop.shop') }}"
+            class="btn btn-light"
+        >
+            Start Your Order
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

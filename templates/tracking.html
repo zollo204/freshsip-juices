@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}
+Track Order | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="tracking-page">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>FRESHSIP DELIVERY</p>
+
+            <h1>
+                Track Your Order
+            </h1>
+
+            <span>
+                Follow the progress of your FreshSip order.
+            </span>
+
+        </div>
+
+
+        <div class="tracking-card">
+
+            <div class="tracking-header">
+
+                <div>
+
+                    <span>
+                        Order Number
+                    </span>
+
+                    <h2>
+                        #{{ order.id }}
+                    </h2>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Order Date
+                    </span>
+
+                    <strong>
+                        {{ order.created_at.strftime("%d %b %Y") }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="tracking-status">
+
+                <h2>
+                    Order Status
+                </h2>
+
+
+                <div class="tracking-timeline">
+
+                    <div class="tracking-step active">
+
+                        <div class="tracking-circle">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Order Placed
+                            </h3>
+
+                            <p>
+                                Your order has been received.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tracking-line"></div>
+
+
+                    <div class="
+                        tracking-step
+                        {% if order.order_status in [
+                            'Processing',
+                            'Out for Delivery',
+                            'Delivered'
+                        ] %}
+                            active
+                        {% endif %}
+                    ">
+
+                        <div class="tracking-circle">
+                            2
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Processing
+                            </h3>
+
+                            <p>
+                                Your order is being prepared.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tracking-line"></div>
+
+
+                    <div class="
+                        tracking-step
+                        {% if order.order_status in [
+                            'Out for Delivery',
+                            'Delivered'
+                        ] %}
+                            active
+                        {% endif %}
+                    ">
+
+                        <div class="tracking-circle">
+                            3
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Out for Delivery
+                            </h3>
+
+                            <p>
+                                Your order is on the way.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tracking-line"></div>
+
+
+                    <div class="
+                        tracking-step
+                        {% if order.order_status == 'Delivered' %}
+                            active
+                        {% endif %}
+                    ">
+
+                        <div class="tracking-circle">
+                            4
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Delivered
+                            </h3>
+
+                            <p>
+                                Your order has been delivered.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="tracking-information">
+
+                <div>
+
+                    <span>
+                        Payment Status
+                    </span>
+
+                    <strong>
+                        {{ order.payment_status }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Delivery Method
+                    </span>
+
+                    <strong>
+                        {{ order.delivery_method }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Delivery Address
+                    </span>
+
+                    <strong>
+                        {{ order.delivery_address }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="tracking-actions">
+
+                <a
+                    href="{{ url_for('orders.orders') }}"
+                    class="btn btn-secondary"
+                >
+                    ← My Orders
+                </a>
+
+
+                <a
+                    href="{{ url_for(
+                        'checkout.order_confirmation',
+                        order_id=order.id
+                    ) }}"
+                    class="btn btn-primary"
+                >
+                    View Order
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

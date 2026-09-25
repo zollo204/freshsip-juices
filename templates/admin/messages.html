@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Customer Messages | FreshSip Admin
+{% endblock %}
+
+
+{% block content %}
+
+<section class="admin-messages-page">
+
+    <div class="container">
+
+
+        <!-- ============================= -->
+        <!-- PAGE HEADER -->
+        <!-- ============================= -->
+
+        <div class="admin-messages-header">
+
+            <div>
+
+                <p class="section-label">
+                    CUSTOMER COMMUNICATION
+                </p>
+
+                <h1>
+                    Customer Messages
+                </h1>
+
+                <p>
+                    Manage messages sent by FreshSip customers.
+                </p>
+
+            </div>
+
+
+            <div class="message-count-card">
+
+                <span>
+                    Unread
+                </span>
+
+                <strong>
+                    {{ unread_count }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- MESSAGES -->
+        <!-- ============================= -->
+
+        <div class="messages-list">
+
+            {% if messages %}
+
+                {% for item in messages %}
+
+                    <div
+                        class="admin-message-card
+                        {% if item.status == 'Unread' %}
+                        message-unread
+                        {% endif %}"
+                    >
+
+
+                        <div class="message-card-top">
+
+                            <div class="message-customer">
+
+                                <div class="message-avatar">
+
+                                    {{ item.name[0]|upper }}
+
+                                </div>
+
+
+                                <div>
+
+                                    <h3>
+                                        {{ item.name }}
+                                    </h3>
+
+                                    <p>
+                                        {{ item.email }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="message-status
+                                status-{{ item.status|lower }}"
+                            >
+                                {{ item.status }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="message-preview">
+
+                            {{ item.message[:180] }}
+
+                            {% if item.message|length > 180 %}
+                                ...
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="message-card-bottom">
+
+                            <span class="message-date">
+
+                                {{ item.created_at.strftime(
+                                    "%d %b %Y, %I:%M %p"
+                                ) }}
+
+                            </span>
+
+
+                            <div class="message-actions">
+
+                                <a
+                                    href="{{ url_for(
+                                        'messages.view_message',
+                                        message_id=item.id
+                                    ) }}"
+                                    class="message-view-button"
+                                >
+                                    View
+                                </a>
+
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for(
+                                        'messages.delete_message',
+                                        message_id=item.id
+                                    ) }}"
+                                    onsubmit="return confirm(
+                                        'Delete this message?'
+                                    );"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="message-delete-button"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <div class="no-messages">
+
+                    <div class="no-messages-icon">
+                        📭
+                    </div>
+
+                    <h2>
+                        No Messages Yet
+                    </h2>
+
+                    <p>
+                        Customer messages will appear here
+                        when someone contacts FreshSip.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

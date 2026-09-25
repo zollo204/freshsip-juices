@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}
+Checkout | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="checkout-page">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>FRESHSIP CHECKOUT</p>
+
+            <h1>Complete Your Order</h1>
+
+            <span>
+                Enter your delivery details and choose your payment method.
+            </span>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('checkout.checkout') }}"
+            class="checkout-form"
+        >
+
+            <div class="checkout-layout">
+
+
+                <!-- CUSTOMER & DELIVERY DETAILS -->
+
+                <div class="checkout-details">
+
+                    <div class="checkout-card">
+
+                        <h2>
+                            Delivery Details
+                        </h2>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{{ current_user.name }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{{ current_user.phone }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="delivery_method">
+                                Delivery Method
+                            </label>
+
+                            <select
+                                id="delivery_method"
+                                name="delivery_method"
+                                required
+                            >
+
+                                <option value="">
+                                    Select delivery method
+                                </option>
+
+                                <option value="Same Day Delivery">
+                                    Same Day Delivery
+                                </option>
+
+                                <option value="Next Day Delivery">
+                                    Next Day Delivery
+                                </option>
+
+                                <option value="Pickup Station">
+                                    Pickup Station
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="delivery_address">
+                                Delivery Address
+                            </label>
+
+                            <textarea
+                                id="delivery_address"
+                                name="delivery_address"
+                                rows="4"
+                                placeholder="Enter your delivery location or pickup station"
+                                required
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="checkout-card">
+
+                        <h2>
+                            Payment Method
+                        </h2>
+
+
+                        <div class="payment-option">
+
+                            <label>
+
+                                <input
+                                    type="radio"
+                                    name="payment_method"
+                                    value="M-Pesa"
+                                    required
+                                >
+
+                                M-Pesa
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="mpesa-instructions">
+
+                            <h3>
+                                Pay via M-Pesa
+                            </h3>
+
+                            <p>
+                                Use the following details to make your payment:
+                            </p>
+
+
+                            <div class="payment-detail">
+
+                                <span>
+                                    Paybill Number
+                                </span>
+
+                                <strong>
+                                    {{ paybill }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="payment-detail">
+
+                                <span>
+                                    Account Number
+                                </span>
+
+                                <strong>
+                                    {{ account }}
+                                </strong>
+
+                            </div>
+
+
+                            <p class="payment-note">
+
+                                After payment, keep your M-Pesa confirmation
+                                message for reference.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ORDER SUMMARY -->
+
+                <div class="checkout-summary">
+
+                    <h2>
+                        Your Order
+                    </h2>
+
+
+                    {% for item in items %}
+
+                    <div class="checkout-item">
+
+                        <div>
+
+                            <strong>
+                                {{ item.product.name }}
+                            </strong>
+
+                            <span>
+                                {{ item.size }} × {{ item.quantity }}
+                            </span>
+
+                        </div>
+
+
+                        <strong>
+                            KES {{ "%.2f"|format(item.subtotal) }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <div class="checkout-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            KES {{ "%.2f"|format(total) }}
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="checkout-btn"
+                    >
+                        Place Order
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('cart.cart') }}"
+                        class="back-to-cart"
+                    >
+                        ← Back to Cart
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

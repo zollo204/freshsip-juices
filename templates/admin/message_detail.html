@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Message from {{ message.name }} | FreshSip Admin
+{% endblock %}
+
+
+{% block content %}
+
+<section class="admin-message-detail-page">
+
+    <div class="container">
+
+
+        <!-- ============================= -->
+        <!-- BACK BUTTON -->
+        <!-- ============================= -->
+
+        <div class="message-detail-header">
+
+            <a
+                href="{{ url_for('messages.messages') }}"
+                class="back-to-messages"
+            >
+                ← Back to Messages
+            </a>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- MESSAGE GRID -->
+        <!-- ============================= -->
+
+        <div class="message-detail-grid">
+
+
+            <!-- ============================= -->
+            <!-- CUSTOMER INFORMATION -->
+            <!-- ============================= -->
+
+            <div class="message-customer-card">
+
+                <div class="message-large-avatar">
+
+                    {{ message.name[0]|upper }}
+
+                </div>
+
+
+                <h2>
+                    {{ message.name }}
+                </h2>
+
+
+                <a
+                    href="mailto:{{ message.email }}"
+                >
+                    {{ message.email }}
+                </a>
+
+
+                {% if message.phone %}
+
+                    <p>
+                        📞 {{ message.phone }}
+                    </p>
+
+                {% endif %}
+
+
+                <div
+                    class="message-detail-status
+                    status-{{ message.status|lower }}"
+                >
+                    {{ message.status }}
+                </div>
+
+
+                <p class="message-detail-date">
+
+                    Received:
+
+                    {{ message.created_at.strftime(
+                        "%d %B %Y at %I:%M %p"
+                    ) }}
+
+                </p>
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- MESSAGE CONTENT -->
+            <!-- ============================= -->
+
+            <div class="message-content-card">
+
+                <p class="section-label">
+                    CUSTOMER MESSAGE
+                </p>
+
+
+                <h1>
+                    Message
+                </h1>
+
+
+                <div class="customer-message">
+
+                    {{ message.message }}
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- REPLY -->
+                <!-- ============================= -->
+
+                <div class="reply-section">
+
+                    <p class="section-label">
+                        REPLY TO CUSTOMER
+                    </p>
+
+
+                    <h2>
+                        Send Reply
+                    </h2>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'messages.reply_message',
+                            message_id=message.id
+                        ) }}"
+                    >
+
+                        <textarea
+                            name="reply"
+                            rows="8"
+                            placeholder="Write your reply..."
+                            required
+                        ></textarea>
+
+
+                        <button
+                            type="submit"
+                            class="reply-button"
+                        >
+                            📧 Send Reply
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Products | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="admin-page">
+
+    <div class="container">
+
+        <div class="admin-header">
+
+            <div>
+
+                <p class="dashboard-label">
+                    FRESHSIP ADMIN
+                </p>
+
+                <h1>
+                    Manage Products
+                </h1>
+
+                <p>
+                    View and manage the juices available in your shop.
+                </p>
+
+            </div>
+
+
+            <div class="admin-header-actions">
+
+                <a
+                    href="{{ url_for('admin.add_product') }}"
+                    class="btn btn-primary"
+                >
+                    + Add Product
+                </a>
+
+
+                <a
+                    href="{{ url_for('admin.dashboard') }}"
+                    class="btn btn-secondary"
+                >
+                    ← Dashboard
+                </a>
+
+
+                <a
+                    href="{{ url_for('auth.logout') }}"
+                    class="btn btn-secondary"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                <div class="flash-messages">
+
+                    {% for message in messages %}
+
+                        <div class="flash-message">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <div class="admin-section">
+
+            <h2>
+                Products
+            </h2>
+
+
+            {% if products %}
+
+            <div class="admin-orders">
+
+                {% for product in products %}
+
+                <div class="admin-order-card">
+
+                    <div class="admin-order-header">
+
+                        <div>
+
+                            <span>
+                                Product
+                            </span>
+
+                            <h3>
+                                {{ product.name }}
+                            </h3>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Category
+                            </span>
+
+                            <strong>
+                                {{ product.category }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Stock
+                            </span>
+
+                            <strong>
+                                {{ product.stock }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-order-details">
+
+                        <div>
+
+                            <span>
+                                300ml
+                            </span>
+
+                            <strong>
+                                KES {{ "%.2f"|format(product.price_300ml) }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                500ml
+                            </span>
+
+                            <strong>
+                                KES {{ "%.2f"|format(product.price_500ml) }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                1 Liter
+                            </span>
+
+                            <strong>
+                                KES {{ "%.2f"|format(product.price_1liter) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-product-description">
+
+                        <span>
+                            Description
+                        </span>
+
+                        <p>
+                            {{ product.description }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="admin-product-actions">
+
+                        <a
+                            href="{{ url_for(
+                                'admin.edit_product',
+                                product_id=product.id
+                            ) }}"
+                            class="btn btn-primary"
+                        >
+                            Edit Product
+                        </a>
+
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'admin.delete_product',
+                                product_id=product.id
+                            ) }}"
+                            onsubmit="return confirm(
+                                'Are you sure you want to delete {{ product.name }}?'
+                            );"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-danger"
+                            >
+                                Delete Product
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-orders">
+
+                <h2>
+                    No products found.
+                </h2>
+
+                <p>
+                    Add your first juice product to the shop.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

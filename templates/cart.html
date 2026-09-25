@@ -1,0 +1,259 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Shopping Cart | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="cart-page">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p>FRESHSIP CART</p>
+
+            <h1>Your Shopping Cart</h1>
+
+            <span>
+                Review your selected juices before checkout.
+            </span>
+
+        </div>
+
+
+        {% if items %}
+
+        <div class="cart-container">
+
+            {% for item in items %}
+
+            <div class="cart-item">
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="cart-item-image">
+
+                    {% if item.product.image %}
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='images/' + item.product.image
+                            ) }}"
+                            alt="{{ item.product.name }}"
+                        >
+
+                    {% else %}
+
+                        🍹
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="cart-item-info">
+
+                    <h3>
+                        {{ item.product.name }}
+                    </h3>
+
+                    <p>
+                        Size: <strong>{{ item.size }}</strong>
+                    </p>
+
+                    <p>
+                        Price:
+                        KES {{ "%.2f"|format(item.price) }}
+                    </p>
+
+
+                    <!-- QUANTITY -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'cart.update_cart',
+                            product_id=item.product.id,
+                            size=item.size
+                        ) }}"
+                        class="cart-quantity-form"
+                    >
+
+                        <label>
+                            Quantity
+                        </label>
+
+                        <div class="quantity-controls">
+
+                            <button
+                                type="button"
+                                onclick="decreaseQuantity(this)"
+                            >
+                                −
+                            </button>
+
+                            <input
+                                type="number"
+                                name="quantity"
+                                value="{{ item.quantity }}"
+                                min="1"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="increaseQuantity(this)"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="update-cart-btn"
+                        >
+                            Update
+                        </button>
+
+                    </form>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <strong class="cart-subtotal">
+
+                        Subtotal:
+                        KES {{ "%.2f"|format(item.subtotal) }}
+
+                    </strong>
+
+                </div>
+
+
+                <!-- REMOVE -->
+
+                <div class="cart-item-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'cart.remove_from_cart',
+                            product_id=item.product.id,
+                            size=item.size
+                        ) }}"
+                        class="remove-btn"
+                    >
+                        Remove
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- CART SUMMARY -->
+
+            <div class="cart-summary">
+
+                <h2>
+                    Total:
+                    KES {{ "%.2f"|format(total) }}
+                </h2>
+
+
+                <div class="cart-buttons">
+
+                    <a
+                        href="{{ url_for('shop.shop') }}"
+                        class="btn btn-secondary"
+                    >
+                        Continue Shopping
+                    </a>
+
+                    <a
+                        href="{{ url_for('cart.clear_cart') }}"
+                        class="btn btn-secondary"
+                    >
+                        Clear Cart
+                    </a>
+
+                    <a href="{{ url_for('checkout.checkout') }}" class="btn btn-primary">
+                        Proceed to Checkout
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+
+        <!-- EMPTY CART -->
+
+        <div class="empty-cart">
+
+            <h2>
+                Your cart is empty.
+            </h2>
+
+            <p>
+                Choose a fresh juice and add it to your cart.
+            </p>
+
+            <a
+                href="{{ url_for('shop.shop') }}"
+                class="btn btn-primary"
+            >
+                Shop Juices
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+function increaseQuantity(button) {
+
+    const input = button
+        .parentElement
+        .querySelector("input");
+
+    input.value = parseInt(input.value) + 1;
+}
+
+
+function decreaseQuantity(button) {
+
+    const input = button
+        .parentElement
+        .querySelector("input");
+
+    const currentValue = parseInt(input.value);
+
+    if (currentValue > 1) {
+        input.value = currentValue - 1;
+    }
+}
+
+</script>
+
+{% endblock %}

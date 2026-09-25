@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+About Us | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="about-page">
+
+    <div class="container">
+
+        <!-- HERO -->
+
+        <div class="about-hero">
+
+            <p class="section-label">
+                ABOUT FRESHSIP
+            </p>
+
+            <h1>
+                Freshness You Can Taste.
+            </h1>
+
+            <p>
+                FreshSip Juices is a Kenyan juice brand dedicated
+                to making fresh, natural and delicious juices
+                available whenever you need them.
+            </p>
+
+        </div>
+
+
+        <!-- OUR STORY -->
+
+        <div class="about-section">
+
+            <div class="about-content">
+
+                <p class="section-label">
+                    OUR STORY
+                </p>
+
+                <h2>
+                    Fresh Juice, Made With Purpose
+                </h2>
+
+                <p>
+                    At FreshSip Juices, we believe that enjoying
+                    a refreshing drink should also mean enjoying
+                    something natural and healthy.
+                </p>
+
+                <p>
+                    We prepare our juices using carefully selected
+                    fruits to give our customers great taste,
+                    freshness and quality in every bottle.
+                </p>
+
+                <p>
+                    From a simple refreshment during a busy day
+                    to a drink shared with family and friends,
+                    FreshSip is here to make every sip better.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- WHAT WE OFFER -->
+
+        <div class="about-section">
+
+            <div class="section-heading">
+
+                <p>
+                    WHY FRESHSIP
+                </p>
+
+                <h2>
+                    What We Offer
+                </h2>
+
+                <span>
+                    Simple, fresh and convenient.
+                </span>
+
+            </div>
+
+
+            <div class="about-features">
+
+                <div class="about-feature">
+
+                    <div class="about-feature-icon">
+                        🍊
+                    </div>
+
+                    <h3>
+                        Fresh Ingredients
+                    </h3>
+
+                    <p>
+                        We focus on fresh fruits and quality
+                        ingredients for great-tasting juices.
+                    </p>
+
+                </div>
+
+
+                <div class="about-feature">
+
+                    <div class="about-feature-icon">
+                        🥤
+                    </div>
+
+                    <h3>
+                        Variety
+                    </h3>
+
+                    <p>
+                        Choose from a range of fruit juices,
+                        mixed juices, detox drinks and smoothies.
+                    </p>
+
+                </div>
+
+
+                <div class="about-feature">
+
+                    <div class="about-feature-icon">
+                        🚚
+                    </div>
+
+                    <h3>
+                        Convenient Delivery
+                    </h3>
+
+                    <p>
+                        Order online and have your favourite
+                        FreshSip juices delivered to your doorstep.
+                    </p>
+
+                </div>
+
+
+                <div class="about-feature">
+
+                    <div class="about-feature-icon">
+                        ❤️
+                    </div>
+
+                    <h3>
+                        Customer First
+                    </h3>
+
+                    <p>
+                        We want every FreshSip customer to enjoy
+                        a simple, friendly and reliable experience.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MISSION -->
+
+        <div class="about-mission">
+
+            <p class="section-label">
+                OUR MISSION
+            </p>
+
+            <h2>
+                Fresh, Natural & Healthy Juices
+                Delivered to Your Doorstep.
+            </h2>
+
+            <p>
+                Our goal is to make quality fresh juice
+                convenient and accessible while creating
+                an enjoyable experience for every customer.
+            </p>
+
+            <a
+                href="{{ url_for('shop.shop') }}"
+                class="btn btn-primary"
+            >
+                Shop Our Juices
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

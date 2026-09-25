@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Confirmation | FreshSip Juices
+{% endblock %}
+
+
+{% block content %}
+
+<section class="checkout-page">
+
+    <div class="container">
+
+        <div class="checkout-summary">
+
+            <div class="section-heading">
+
+                <p>FRESHSIP JUICES</p>
+
+                <h1>
+                    Order Placed Successfully!
+                </h1>
+
+                <span>
+                    Thank you for your order.
+                </span>
+
+            </div>
+
+
+            <div class="order-confirmation">
+
+                <h2>
+                    Order #{{ order.id }}
+                </h2>
+
+
+                <p>
+                    Your order has been received and is currently
+                    <strong>{{ order.order_status }}</strong>.
+                </p>
+
+
+                <div class="checkout-total">
+
+                    <span>
+                        Total Amount
+                    </span>
+
+                    <strong>
+                        KES {{ "%.2f"|format(order.total_amount) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-detail">
+
+                    <span>
+                        Payment Method
+                    </span>
+
+                    <strong>
+                        {{ order.payment_method }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-detail">
+
+                    <span>
+                        Payment Status
+                    </span>
+
+                    <strong>
+                        {{ order.payment_status }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-detail">
+
+                    <span>
+                        Delivery Method
+                    </span>
+
+                    <strong>
+                        {{ order.delivery_method }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-detail">
+
+                    <span>
+                        Delivery Address
+                    </span>
+
+                    <strong>
+                        {{ order.delivery_address }}
+                    </strong>
+
+                </div>
+
+
+                <h3>
+                    Items Ordered
+                </h3>
+
+
+                {% for item in order.items %}
+
+                <div class="checkout-item">
+
+                    <div>
+
+                        <strong>
+                            {{ item.product_name }}
+                        </strong>
+
+                        <span>
+                            {{ item.size }} × {{ item.quantity }}
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        KES {{ "%.2f"|format(item.subtotal) }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+
+                <div class="cart-buttons">
+
+                    <a
+                        href="{{ url_for('shop.shop') }}"
+                        class="btn btn-primary"
+                    >
+                        Continue Shopping
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('dashboard.dashboard') }}"
+                        class="btn btn-secondary"
+                    >
+                        My Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
