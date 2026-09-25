@@ -23,7 +23,10 @@ class Config:
     # DATABASE
     # =============================
 
-    SQLALCHEMY_DATABASE_URI = "sqlite:///freshsip.db"
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "sqlite:///freshsip.db"
+        )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
