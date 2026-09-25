@@ -105,7 +105,7 @@ def create_app():
     def home():
 
         featured_products = Product.query.limit(
-            3
+            10
         ).all()
 
 
@@ -199,6 +199,4 @@ app = create_app()
 
 if __name__ == "__main__":
 
-    app.run(
-        debug=True
-    )
+    app.run()
